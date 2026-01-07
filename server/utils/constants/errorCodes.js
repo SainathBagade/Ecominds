@@ -1,0 +1,209 @@
+/**
+ * Error Codes Constants
+ * Centralized error codes and messages
+ */
+
+// HTTP Status Codes
+const HTTP_STATUS = {
+  OK: 200,
+  CREATED: 201,
+  NO_CONTENT: 204,
+  BAD_REQUEST: 400,
+  UNAUTHORIZED: 401,
+  FORBIDDEN: 403,
+  NOT_FOUND: 404,
+  CONFLICT: 409,
+  UNPROCESSABLE_ENTITY: 422,
+  TOO_MANY_REQUESTS: 429,
+  INTERNAL_SERVER_ERROR: 500,
+  SERVICE_UNAVAILABLE: 503,
+};
+
+// Application Error Codes
+const ERROR_CODES = {
+  // Authentication Errors (1000-1099)
+  AUTH_INVALID_CREDENTIALS: 1001,
+  AUTH_TOKEN_EXPIRED: 1002,
+  AUTH_TOKEN_INVALID: 1003,
+  AUTH_TOKEN_MISSING: 1004,
+  AUTH_USER_NOT_FOUND: 1005,
+  AUTH_EMAIL_EXISTS: 1006,
+  AUTH_PASSWORD_INCORRECT: 1007,
+  AUTH_ACCOUNT_LOCKED: 1008,
+  AUTH_EMAIL_NOT_VERIFIED: 1009,
+
+  // Authorization Errors (1100-1199)
+  AUTHZ_INSUFFICIENT_PERMISSIONS: 1101,
+  AUTHZ_ROLE_REQUIRED: 1102,
+  AUTHZ_RESOURCE_FORBIDDEN: 1103,
+  AUTHZ_SCHOOL_MISMATCH: 1104,
+  AUTHZ_OWNER_ONLY: 1105,
+
+  // Validation Errors (1200-1299)
+  VALIDATION_FAILED: 1201,
+  VALIDATION_EMAIL_INVALID: 1202,
+  VALIDATION_PASSWORD_WEAK: 1203,
+  VALIDATION_REQUIRED_FIELD: 1204,
+  VALIDATION_INVALID_FORMAT: 1205,
+  VALIDATION_OUT_OF_RANGE: 1206,
+  VALIDATION_DUPLICATE_ENTRY: 1207,
+  VALIDATION_INVALID_ID: 1208,
+
+  // User Errors (1300-1399)
+  USER_NOT_FOUND: 1301,
+  USER_ALREADY_EXISTS: 1302,
+  USER_INACTIVE: 1303,
+  USER_SUSPENDED: 1304,
+  USER_PROFILE_INCOMPLETE: 1305,
+
+  // Content Errors (1400-1499)
+  GRADE_NOT_FOUND: 1401,
+  SUBJECT_NOT_FOUND: 1402,
+  MODULE_NOT_FOUND: 1403,
+  LESSON_NOT_FOUND: 1404,
+  CONTENT_INACTIVE: 1405,
+  CONTENT_LOCKED: 1406,
+
+  // Quiz Errors (1500-1599)
+  QUIZ_NOT_FOUND: 1501,
+  QUIZ_ALREADY_STARTED: 1502,
+  QUIZ_ALREADY_SUBMITTED: 1503,
+  QUIZ_TIME_EXPIRED: 1504,
+  QUIZ_MAX_ATTEMPTS: 1505,
+  QUIZ_NOT_ACTIVE: 1506,
+  QUESTION_NOT_FOUND: 1507,
+  QUESTION_INVALID_OPTIONS: 1508,
+  SUBMISSION_NOT_FOUND: 1509,
+  SUBMISSION_INVALID_STATE: 1510,
+
+  // Gamification Errors (1600-1699)
+  BADGE_NOT_FOUND: 1601,
+  BADGE_ALREADY_EARNED: 1602,
+  ACHIEVEMENT_NOT_FOUND: 1603,
+  ACHIEVEMENT_NOT_UNLOCKED: 1604,
+  ACHIEVEMENT_ALREADY_COMPLETED: 1605,
+  POINTS_INSUFFICIENT: 1606,
+  LEVEL_REQUIREMENT_NOT_MET: 1607,
+  STREAK_BROKEN: 1608,
+
+  // Mission/Challenge Errors (1700-1799)
+  MISSION_NOT_FOUND: 1701,
+  MISSION_FULL: 1702,
+  MISSION_EXPIRED: 1703,
+  MISSION_ALREADY_ENROLLED: 1704,
+  MISSION_NOT_ENROLLED: 1705,
+  MISSION_INCOMPLETE: 1706,
+  CHALLENGE_NOT_FOUND: 1707,
+  CHALLENGE_EXPIRED: 1708,
+  CHALLENGE_NOT_ACTIVE: 1709,
+
+  // File Upload Errors (1800-1899)
+  UPLOAD_FILE_TOO_LARGE: 1801,
+  UPLOAD_INVALID_FILE_TYPE: 1802,
+  UPLOAD_FILE_CORRUPT: 1803,
+  UPLOAD_FAILED: 1804,
+  UPLOAD_QUOTA_EXCEEDED: 1805,
+
+  // Rate Limit Errors (1900-1999)
+  RATE_LIMIT_EXCEEDED: 1901,
+  RATE_LIMIT_IP_BLOCKED: 1902,
+  RATE_LIMIT_USER_BLOCKED: 1903,
+
+  // Database Errors (2000-2099)
+  DB_CONNECTION_ERROR: 2001,
+  DB_QUERY_ERROR: 2002,
+  DB_TRANSACTION_ERROR: 2003,
+  DB_DUPLICATE_KEY: 2004,
+  DB_VALIDATION_ERROR: 2005,
+  DB_CAST_ERROR: 2006,
+
+  // External Service Errors (2100-2199)
+  SERVICE_UNAVAILABLE: 2101,
+  SERVICE_TIMEOUT: 2102,
+  SERVICE_INVALID_RESPONSE: 2103,
+
+  // General Errors (9000-9999)
+  INTERNAL_ERROR: 9001,
+  NOT_IMPLEMENTED: 9002,
+  MAINTENANCE_MODE: 9003,
+  UNKNOWN_ERROR: 9999,
+};
+
+// Error Messages
+const ERROR_MESSAGES = {
+  // Authentication
+  [ERROR_CODES.AUTH_INVALID_CREDENTIALS]: 'Invalid email or password',
+  [ERROR_CODES.AUTH_TOKEN_EXPIRED]: 'Your session has expired. Please login again',
+  [ERROR_CODES.AUTH_TOKEN_INVALID]: 'Invalid authentication token',
+  [ERROR_CODES.AUTH_TOKEN_MISSING]: 'Authentication token is required',
+  [ERROR_CODES.AUTH_USER_NOT_FOUND]: 'User not found',
+  [ERROR_CODES.AUTH_EMAIL_EXISTS]: 'Email already registered',
+  [ERROR_CODES.AUTH_PASSWORD_INCORRECT]: 'Incorrect password',
+  [ERROR_CODES.AUTH_ACCOUNT_LOCKED]: 'Account is locked. Please contact support',
+  [ERROR_CODES.AUTH_EMAIL_NOT_VERIFIED]: 'Please verify your email address',
+
+  // Authorization
+  [ERROR_CODES.AUTHZ_INSUFFICIENT_PERMISSIONS]: 'You do not have permission to perform this action',
+  [ERROR_CODES.AUTHZ_ROLE_REQUIRED]: 'Required role not found',
+  [ERROR_CODES.AUTHZ_RESOURCE_FORBIDDEN]: 'Access to this resource is forbidden',
+  [ERROR_CODES.AUTHZ_SCHOOL_MISMATCH]: 'You can only access resources from your school',
+  [ERROR_CODES.AUTHZ_OWNER_ONLY]: 'Only the resource owner can perform this action',
+
+  // Validation
+  [ERROR_CODES.VALIDATION_FAILED]: 'Validation failed',
+  [ERROR_CODES.VALIDATION_EMAIL_INVALID]: 'Invalid email format',
+  [ERROR_CODES.VALIDATION_PASSWORD_WEAK]: 'Password does not meet requirements',
+  [ERROR_CODES.VALIDATION_REQUIRED_FIELD]: 'Required field is missing',
+  [ERROR_CODES.VALIDATION_INVALID_FORMAT]: 'Invalid data format',
+  [ERROR_CODES.VALIDATION_OUT_OF_RANGE]: 'Value is out of acceptable range',
+  [ERROR_CODES.VALIDATION_DUPLICATE_ENTRY]: 'Duplicate entry found',
+  [ERROR_CODES.VALIDATION_INVALID_ID]: 'Invalid ID format',
+
+  // Quiz
+  [ERROR_CODES.QUIZ_NOT_FOUND]: 'Quiz not found',
+  [ERROR_CODES.QUIZ_ALREADY_STARTED]: 'Quiz already in progress',
+  [ERROR_CODES.QUIZ_ALREADY_SUBMITTED]: 'Quiz already submitted',
+  [ERROR_CODES.QUIZ_TIME_EXPIRED]: 'Quiz time has expired',
+  [ERROR_CODES.QUIZ_MAX_ATTEMPTS]: 'Maximum attempts reached',
+  [ERROR_CODES.QUIZ_NOT_ACTIVE]: 'Quiz is not active',
+
+  // Gamification
+  [ERROR_CODES.BADGE_ALREADY_EARNED]: 'Badge already earned',
+  [ERROR_CODES.ACHIEVEMENT_ALREADY_COMPLETED]: 'Achievement already completed',
+  [ERROR_CODES.POINTS_INSUFFICIENT]: 'Insufficient points',
+  [ERROR_CODES.STREAK_BROKEN]: 'Streak has been broken',
+
+  // Rate Limit
+  [ERROR_CODES.RATE_LIMIT_EXCEEDED]: 'Too many requests. Please try again later',
+
+  // General
+  [ERROR_CODES.INTERNAL_ERROR]: 'An internal error occurred',
+  [ERROR_CODES.NOT_IMPLEMENTED]: 'Feature not yet implemented',
+  [ERROR_CODES.MAINTENANCE_MODE]: 'System is under maintenance',
+  [ERROR_CODES.UNKNOWN_ERROR]: 'An unknown error occurred',
+};
+
+/**
+ * Get error message by code
+ */
+const getErrorMessage = (code) => {
+  return ERROR_MESSAGES[code] || ERROR_MESSAGES[ERROR_CODES.UNKNOWN_ERROR];
+};
+
+/**
+ * Create error object with code and message
+ */
+const createError = (code, customMessage = null) => {
+  return {
+    code,
+    message: customMessage || getErrorMessage(code),
+  };
+};
+
+module.exports = {
+  HTTP_STATUS,
+  ERROR_CODES,
+  ERROR_MESSAGES,
+  getErrorMessage,
+  createError,
+};

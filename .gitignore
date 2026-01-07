@@ -1,0 +1,44 @@
+# Node modules
+node_modules/
+client/node_modules/
+server/node_modules/
+
+# Environment variables
+.env
+client/.env
+server/.env
+
+# Documentation & Helper files (User requested to exclude)
+API_DOCUMENTATION.md
+API_REFERENCE.md
+CHALLENGES_MISSIONS_READY.md
+CODEBASE_WALKTHROUGH.md
+DEBUG_ANALYSIS_REGISTRATION.md
+FEATURE_PROPOSAL_ECO_VENTURES.md
+GRADES_4-12_UPDATE.md
+IMPLEMENTATION_GUIDE.md
+IMPLEMENTATION_SUMMARY.md
+INDEX.md
+LEADERBOARD_IMPLEMENTATION.md
+LEADERBOARD_RANK_FIX.md
+PROJECT_OVERVIEW.md
+QUICK_START.md
+SETUP_CHECKLIST.md
+TECH_STACK_DETAILS.md
+TESTING_GUIDE.md
+TROUBLESHOOTING.md
+VERIFICATION_ALGORITHM.md
+start.bat
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Build files
+client/build/
+client/dist/
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*

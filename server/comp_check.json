@@ -1,0 +1,47 @@
+[
+  {
+    "_id": "6953d2aa170bcd60c52b83d0",
+    "title": "Spring Green Challenge 2024",
+    "image": "https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&q=80&w=800"
+  },
+  {
+    "_id": "6953d2aa170bcd60c52b83d1",
+    "title": "Winter Waste Warriors",
+    "image": "https://images.unsplash.com/photo-1532996122724-e3c354a0b15b?auto=format&fit=crop&q=80&w=800"
+  },
+  {
+    "_id": "6953d2aa170bcd60c52b83d2",
+    "title": "Autumn Sustainability Sprint",
+    "image": "https://images.unsplash.com/photo-1502082553245-0361309d9494?auto=format&fit=crop&q=80&w=800"
+  },
+  {
+    "_id": "6953d2aa170bcd60c52b83d3",
+    "title": "Summer Eco Olympics 2025",
+    "image": "https://media.istockphoto.com/id/2169297693/photo/young-woman-with-dog-explores-waterfall.jpg?s=2048x2048&w=is&k=20&c=SpvYGtzqskd71YZgcy08ldyGhL-S3HaMiTI4zWY6bYQ="
+  },
+  {
+    "_id": "6953d2aa170bcd60c52b83d4",
+    "title": "Climate Action Battle Royale",
+    "image": "https://images.unsplash.com/photo-1470770841072-f978cf4d019e?auto=format&fit=crop&q=80&w=800"
+  },
+  {
+    "_id": "6953d2aa170bcd60c52b83d5",
+    "title": "Green Team League",
+    "image": "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&q=80&w=800"
+  },
+  {
+    "_id": "6957ccec36226dbedd77cc9a",
+    "title": "Green Innovation Challenge",
+    "image": "https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?auto=format&fit=crop&q=80&w=800"
+  },
+  {
+    "_id": "6957ccec36226dbedd77cc9b",
+    "title": "Eco-Quiz Championship",
+    "image": "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?auto=format&fit=crop&q=80&w=800"
+  },
+  {
+    "_id": "695ddc64b5a66d726ec8912e",
+    "title": "Events",
+    "image": "https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&q=80&w=800"
+  }
+]
