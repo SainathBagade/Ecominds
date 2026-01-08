@@ -2,12 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { useAuth } from '@hooks/useAuth';
 import { useSearchParams } from 'react-router-dom';
 import {
-    Users, UserCheck, Shield, Award, Settings, Check, X,
-    Plus, LayoutDashboard, UserPlus, Trophy, Calendar,
-    BarChart3, Search, Mail, Loader2, Flame
+    UserCheck, Shield, Award, Settings, Check, X,
+    Plus, UserPlus, Trophy, Calendar,
+    Mail, Loader2, Users
 } from 'lucide-react';
 import api from '@services/api';
-import { USER_ROLES } from '@utils/constants';
 import toast from 'react-hot-toast';
 import Loader from '@components/Common/Loader';
 

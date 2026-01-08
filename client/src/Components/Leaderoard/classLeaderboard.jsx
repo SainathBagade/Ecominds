@@ -1,5 +1,5 @@
 import React from 'react';
-import { Trophy, Medal, Crown, TrendingUp, Users, Award, Filter } from 'lucide-react';
+import { Trophy, Medal, Crown, TrendingUp, Users, Award } from 'lucide-react';
 
 const ClassLeaderboard = ({ data = [], userRank, selectedGrade, timeFilter, onGradeChange, onTimeChange }) => {
   const students = data;

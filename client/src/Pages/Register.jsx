@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '@hooks/useAuth';
-import { Mail, Lock, Eye, EyeOff, User, Leaf, GraduationCap, Shield } from 'lucide-react';
+import { Mail, Lock, Eye, EyeOff, User, Leaf, GraduationCap } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { GRADE_LEVELS, USER_ROLES } from '@utils/constants';
 

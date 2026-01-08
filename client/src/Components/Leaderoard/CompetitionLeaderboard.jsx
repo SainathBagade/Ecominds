@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { Trophy, Medal, Crown, TrendingUp, Users, Award } from 'lucide-react';
 
 const CompetitionLeaderboard = ({ data = [], loading = false }) => {
-  const [selectedCompetition, setSelectedCompetition] = useState(null);
 
   if (loading) {
     return (
@@ -27,14 +26,6 @@ const CompetitionLeaderboard = ({ data = [], loading = false }) => {
     return <span className="text-gray-600 font-bold">#{rank}</span>;
   };
 
-  const getBadgeColor = (badge) => {
-    const colors = {
-      gold: 'bg-yellow-100 text-yellow-800',
-      silver: 'bg-gray-100 text-gray-800',
-      bronze: 'bg-orange-100 text-orange-800',
-    };
-    return colors[badge] || 'bg-gray-100 text-gray-800';
-  };
 
   return (
     <div className="space-y-6">
@@ -52,8 +43,8 @@ const CompetitionLeaderboard = ({ data = [], loading = false }) => {
             <div
               key={index}
               className={`flex items-center justify-between p-4 rounded-lg border-2 transition-all ${entry.rank <= 3
-                  ? 'bg-gradient-to-r from-primary-50 to-primary-100 border-primary-300'
-                  : 'bg-white border-gray-200 hover:border-primary-300'
+                ? 'bg-gradient-to-r from-primary-50 to-primary-100 border-primary-300'
+                : 'bg-white border-gray-200 hover:border-primary-300'
                 }`}
             >
               <div className="flex items-center gap-4 flex-1">
@@ -80,8 +71,8 @@ const CompetitionLeaderboard = ({ data = [], loading = false }) => {
               <div className="flex items-center gap-2">
                 {entry.rank <= 3 && (
                   <Trophy className={`w-5 h-5 ${entry.rank === 1 ? 'text-yellow-500' :
-                      entry.rank === 2 ? 'text-gray-400' :
-                        'text-orange-600'
+                    entry.rank === 2 ? 'text-gray-400' :
+                      'text-orange-600'
                     }`} />
                 )}
               </div>

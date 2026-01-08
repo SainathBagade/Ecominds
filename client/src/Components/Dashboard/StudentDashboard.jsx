@@ -27,14 +27,12 @@ const StudentDashboard = () => {
     const [userStats, setUserStats] = React.useState(null);
     const [leaderboard, setLeaderboard] = React.useState([]);
     const [userRank, setUserRank] = React.useState(null);
-    const [statsLoading, setStatsLoading] = React.useState(true);
     const [competitions, setCompetitions] = React.useState([]);
     const [learningProgress, setLearningProgress] = React.useState(null);
     const navigate = useNavigate();
 
     React.useEffect(() => {
         const fetchDashboardData = async () => {
-            setStatsLoading(true);
             try {
                 const [statsRes, leaderboardRes] = await Promise.all([
                     api.get('/progress/stats'),
@@ -74,8 +72,6 @@ const StudentDashboard = () => {
                 }
             } catch (error) {
                 console.error('Error fetching dashboard data:', error);
-            } finally {
-                setStatsLoading(false);
             }
         };
 

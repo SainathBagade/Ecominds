@@ -3,11 +3,9 @@ import { Target, CheckCircle, Clock, Award, Camera } from 'lucide-react';
 
 const MissionCard = ({ mission, onClick, onAction }) => {
     const {
-        _id,
         title,
         description,
         type,
-        target, // e.g., 100 points, 2 lessons
         reward = { xp: 0, coins: 0 },
         status = 'active', // active, pending, completed
         requiresProof = false

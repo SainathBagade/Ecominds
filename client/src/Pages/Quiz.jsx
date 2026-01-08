@@ -19,13 +19,7 @@ const Quiz = () => {
   const [result, setResult] = useState(null);
   const [submissionId, setSubmissionId] = useState(null);
 
-  useEffect(() => {
-    if (id) {
-      fetchQuiz();
-    }
-  }, [id]);
-
-  const fetchQuiz = async () => {
+  const fetchQuiz = React.useCallback(async () => {
     setLoading(true);
     try {
       const response = await api.get(`/quizzes/${id}`);
@@ -43,7 +37,13 @@ const Quiz = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [id]);
+
+  useEffect(() => {
+    if (id) {
+      fetchQuiz();
+    }
+  }, [id, fetchQuiz]);
 
   const handleStartQuiz = async () => {
     try {

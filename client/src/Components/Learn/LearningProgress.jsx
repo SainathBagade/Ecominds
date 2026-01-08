@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { Target, Trophy, Clock, BookOpen } from 'lucide-react';
+import { Target, Trophy, BookOpen } from 'lucide-react';
 import { ProgressContext } from '@context/ProgressContext';
 
 const LearningProgress = ({ stats }) => {

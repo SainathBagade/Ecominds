@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '@hooks/useAuth';
 import Loader from '@components/Common/Loader';
-import { Image, CheckCircle, XCircle, Clock, TrendingUp, Brain, Sparkles, Send, ShieldCheck, Zap, Info } from 'lucide-react';
+import { Image, CheckCircle, XCircle, Clock, TrendingUp, Brain, Sparkles, ShieldCheck } from 'lucide-react';
 import toast from 'react-hot-toast';
 import api from '@services/api';
 import { USER_ROLES, PROOF_STATUS, SITE_URL } from '@utils/constants';
@@ -22,17 +22,7 @@ const ProofReview = () => {
     total: 0
   });
 
-  useEffect(() => {
-    if (user?.role !== USER_ROLES.TEACHER) {
-      toast.error('Access denied. Teachers only.');
-      window.location.href = '/dashboard';
-      return;
-    }
-    fetchProofs();
-    fetchStats();
-  }, [activeTab, user]);
-
-  const fetchProofs = async () => {
+  const fetchProofs = React.useCallback(async () => {
     setLoading(true);
     try {
       const response = await api.get('/submissions/proofs', {
@@ -55,16 +45,26 @@ const ProofReview = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [activeTab]);
 
-  const fetchStats = async () => {
+  const fetchStats = React.useCallback(async () => {
     try {
       const response = await api.get('/submissions/proofs/stats');
       setStats(response.data.stats || { pending: 0, approved: 0, rejected: 0, total: 0 });
     } catch (error) {
       console.error('Stats error:', error);
     }
-  };
+  }, []);
+
+  useEffect(() => {
+    if (user?.role !== USER_ROLES.TEACHER) {
+      toast.error('Access denied. Teachers only.');
+      window.location.href = '/dashboard';
+      return;
+    }
+    fetchProofs();
+    fetchStats();
+  }, [fetchProofs, fetchStats, user]);
 
   const handleUpdateForm = (id, key, value) => {
     setFormStates(prev => ({

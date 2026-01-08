@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Loader from '@components/Common/Loader';
-import { BookOpen, Brain, ChevronRight, PlayCircle, Lock, Trophy, Target, Star } from 'lucide-react';
+import { BookOpen, Brain, ChevronRight, PlayCircle, Trophy, Target, Star } from 'lucide-react';
 import toast from 'react-hot-toast';
 import api from '@services/api';
 import { useAuth } from '@hooks/useAuth';
@@ -14,13 +14,7 @@ const Quizzes = () => {
   const [loading, setLoading] = useState(true);
   const [activeSubject, setActiveSubject] = useState(null);
 
-  useEffect(() => {
-    if (user?.grade) {
-      fetchData();
-    }
-  }, [user]);
-
-  const fetchData = async () => {
+  const fetchData = React.useCallback(async () => {
     setLoading(true);
     try {
       const gradeId = typeof user.grade === 'object' ? user.grade._id : user.grade;
@@ -44,7 +38,13 @@ const Quizzes = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [user]);
+
+  useEffect(() => {
+    if (user?.grade) {
+      fetchData();
+    }
+  }, [user, fetchData]);
 
   const handleStartQuiz = (quizId) => {
     navigate(`/quiz/${quizId}`);
