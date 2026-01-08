@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Trophy, Medal, Crown, TrendingUp, Users, Award } from 'lucide-react';
+import { Trophy, Medal, Crown, TrendingUp } from 'lucide-react';
 
 const CompetitionLeaderboard = ({ data = [], loading = false }) => {
 

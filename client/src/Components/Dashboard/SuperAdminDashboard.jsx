@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '@hooks/useAuth';
-import { Globe, Building, ShieldAlert, Plus, Check, X, Server, Database, Activity } from 'lucide-react';
+import { Globe, Building, ShieldAlert, Plus, Check, X, Server, Activity } from 'lucide-react';
 import api from '@services/api';
 import toast from 'react-hot-toast';
 import Loader from '@components/Common/Loader';

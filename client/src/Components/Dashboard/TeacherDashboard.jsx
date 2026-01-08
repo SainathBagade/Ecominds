@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '@hooks/useAuth';
-import { Users, FileCheck, Award, Plus, ArrowRight, Clock, Target, X } from 'lucide-react';
+import { Users, FileCheck, Award, ArrowRight, Clock, Target, X } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import api from '@services/api';
 import toast from 'react-hot-toast';
