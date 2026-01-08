@@ -38,7 +38,18 @@ Thumbs.db
 client/build/
 client/dist/
 
+# Uploads (Ignore content but keep folder structure if needed via scripts)
+server/uploads/*
+!server/uploads/.gitkeep
+
 # Logs
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+.log
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.bak
