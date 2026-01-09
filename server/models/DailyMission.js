@@ -1,4 +1,5 @@
 // server/models/DailyMission.js
+
 const mongoose = require('mongoose');
 
 const dailyMissionSchema = new mongoose.Schema({

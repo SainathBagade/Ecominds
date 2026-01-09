@@ -8,6 +8,7 @@ const { HTTP_STATUS } = require('../config/constants');
 // @access  Public
 const registerUser = async (req, res) => {
   try {
+    console.log('📝 Register request received:', { ...req.body, password: '***' });
     const { name, email, password, role, schoolID, grade, phone } = req.body;
 
     // Check if all required fields exist
@@ -31,6 +32,7 @@ const registerUser = async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, salt);
 
     // Create user
+    console.log('👤 Creating user...');
     const user = await User.create({
       name,
       email,
@@ -42,13 +44,34 @@ const registerUser = async (req, res) => {
     });
 
     if (user) {
-      // Initialize Streak for new user
-      const Streak = require('../models/Streak');
-      const { streak: newStreak } = await (await Streak.create({
-        user: user._id,
-        currentStreak: 1,
-        lastActivityDate: new Date()
-      })).updateStreak(); // This ensures milestones are checked if any, and syncs to User
+      console.log('✅ User created successfully:', user._id);
+
+      let newStreak;
+      try {
+        // Initialize Streak for new user
+        console.log('🔥 Initializing streak for user:', user._id);
+        const Streak = require('../models/Streak');
+
+        // Create initial streak document
+        const streakDoc = await Streak.create({
+          user: user._id,
+          currentStreak: 1,
+          lastActivityDate: new Date()
+        });
+
+        // Update it to ensure logic runs (though simply creating it might be enough)
+        const updateResult = await streakDoc.updateStreak();
+        newStreak = updateResult.streak;
+        console.log('✅ Streak initialized successfully');
+      } catch (streakError) {
+        console.error('❌ Failed to create streak:', streakError);
+        // If streak creation fails, we should probably rollback the user creation
+        // so the user can try again without "User already exists" error
+        await User.findByIdAndDelete(user._id);
+        return res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({
+          message: 'Failed to initialize user account (Streak Error). Please try again.'
+        });
+      }
 
       res.status(HTTP_STATUS.CREATED).json({
         _id: user._id,
@@ -59,7 +82,7 @@ const registerUser = async (req, res) => {
         grade: user.grade,
         phone: user.phone,
         points: user.points,
-        streak: newStreak.currentStreak,
+        streak: newStreak ? newStreak.currentStreak : 0,
         badges: user.badges,
         achievements: user.achievements,
         token: generateToken(user._id),
@@ -68,6 +91,7 @@ const registerUser = async (req, res) => {
       res.status(HTTP_STATUS.BAD_REQUEST).json({ message: 'Invalid user data' });
     }
   } catch (error) {
+    console.error('❌ Registration Error:', error);
     res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({ message: error.message });
   }
 };

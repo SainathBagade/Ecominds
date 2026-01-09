@@ -263,11 +263,25 @@ exports.unlockModule = async (req, res) => {
 };
 
 // Get user statistics
+// Get user statistics
 exports.getUserStats = async (req, res) => {
   try {
     const userId = req.user.id;
 
-    const userProgress = await UserProgress.findOne({ user: userId });
+    // Fix: Ensure UserProgress exists, create if missing (similar to getUserProgress)
+    let userProgress = await UserProgress.findOne({ user: userId });
+
+    if (!userProgress) {
+      console.log(`⚠️ UserProgress not found for user ${userId} in stats call. Creating now...`);
+      try {
+        userProgress = await UserProgress.create({ user: userId });
+      } catch (createError) {
+        console.error('❌ Error auto-creating UserProgress:', createError);
+        // Fallback to empty object if creation fails, don't crash the whole stats call
+        userProgress = {};
+      }
+    }
+
     const lessonStats = await LessonProgress.getUserStats(userId);
     const moduleStats = await ModuleProgress.getUserOverallProgress(userId);
     const streak = await Streak.findOne({ user: userId });
@@ -276,7 +290,7 @@ exports.getUserStats = async (req, res) => {
       success: true,
       data: {
         userProgress,
-        lessonStats,
+        lessonStats: lessonStats || {}, // ensure not null
         moduleStats: moduleStats[0] || {},
         streak: {
           current: streak?.currentStreak || 0,
@@ -285,6 +299,7 @@ exports.getUserStats = async (req, res) => {
       }
     });
   } catch (error) {
+    console.error('❌ Error fetching user stats:', error);
     res.status(500).json({
       success: false,
       message: 'Error fetching user stats',

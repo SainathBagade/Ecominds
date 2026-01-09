@@ -1,6 +1,7 @@
 const express = require('express');
 const dotenv = require('dotenv');
 const cors = require('cors');
+const path = require('path');
 const connectDB = require('./config/database');
 
 // Load environment variables
@@ -18,23 +19,35 @@ app.use(express.json());
 app.use('/uploads', express.static('uploads'));
 console.log("✅ Middleware configured");
 
-// Welcome Route - Root endpoint
-app.get('/', (req, res) => {
-  res.json({
-    message: '🎉 Welcome to EcoMinds API!',
-    status: 'Server is running successfully',
-    version: '1.0.0',
-    endpoints: {
-      users: '/api/users',
-      register: '/api/users/register',
-      login: '/api/users/login',
-      ecopoints: '/api/ecopoints',
-      badges: '/api/badges',
-      achievements: '/api/achievements'
-    },
-    documentation: 'Visit /api/docs for API documentation'
+
+// Serve static files in production
+if (process.env.NODE_ENV === 'production') {
+  // Serve static files from the React app
+  app.use(express.static(path.join(__dirname, '../client/build')));
+
+  // The "catchall" handler: for any request that doesn't
+  // match one above, send back React's index.html file.
+  app.get('*', (req, res) => {
+    // Check if request is for API
+    if (req.path.startsWith('/api')) {
+      return res.status(404).json({
+        error: 'Not Found',
+        message: `API route not found: ${req.method} ${req.url}`
+      });
+    }
+    res.sendFile(path.resolve(__dirname, '../client/build', 'index.html'));
   });
-});
+  console.log("✅ Serving React App in Production");
+} else {
+  // Development Welcome Route
+  app.get('/', (req, res) => {
+    res.json({
+      message: '🎉 Welcome to EcoMinds API!',
+      status: 'Server is running in Development mode',
+      instructions: 'Frontend is running separately on port 3000'
+    });
+  });
+}
 
 // API Info Route
 app.get('/api', (req, res) => {

@@ -9,11 +9,13 @@ const Challenge = require('../../models/Challenge');
 const Competition = require('../../models/Competition');
 const DailyMission = require('../../models/DailyMission');
 
+const connectDB = require('../../config/database');
+
 dotenv.config();
 
 const seedCompleteEducation = async () => {
     try {
-        await mongoose.connect(process.env.MONGO_URI);
+        await connectDB();
         console.log('🔌 Connected to DB...');
 
         // Clear existing educational data
@@ -402,12 +404,79 @@ const seedCompleteEducation = async () => {
                     third: { xp: 300, coins: 60 },
                     participation: { xp: 75, coins: 15 }
                 },
-                registrationStart: new Date(now + 15 * day),
-                registrationEnd: new Date(now + 30 * day),
-                startDate: new Date(now + 35 * day),
-                endDate: new Date(now + 70 * day),
+                registrationStart: new Date('2026-01-14T13:24:58.331Z'),
+                registrationEnd: new Date('2026-01-29T13:24:58.331Z'),
+                startDate: new Date('2026-02-03T13:24:58.331Z'),
+                endDate: new Date('2026-03-10T13:24:58.331Z'),
                 status: 'registration',
                 featured: true,
+                image: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&q=80&w=1000",
+                participants: []
+            },
+            // User Restored Data
+            {
+                title: "Green Innovation Challenge",
+                description: "Propose and implement a small-scale environmental solution in your school or community.",
+                type: "tournament",
+                mode: "solo",
+                format: "points_based",
+                criteria: { type: 'highest_score', minScore: 50 },
+                rules: { maxParticipants: 50, minParticipants: 5, totalRounds: 1 },
+                prizes: {
+                    first: { xp: 1000, coins: 250 },
+                    second: { xp: 500, coins: 125 },
+                    third: { xp: 250, coins: 60 }
+                },
+                registrationStart: new Date('2025-12-31T14:55:09.141Z'),
+                registrationEnd: new Date('2026-02-06T14:55:09.141Z'),
+                startDate: new Date('2026-01-07T14:55:09.141Z'),
+                endDate: new Date('2026-02-06T14:55:09.141Z'),
+                status: "in_progress",
+                featured: true,
+                image: "https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?auto=format&fit=crop&q=80&w=1000",
+                participants: []
+            },
+            {
+                title: "Eco-Quiz Championship",
+                description: "Test your knowledge of climate change and sustainability in this fast-paced quiz battle.",
+                type: "battle",
+                mode: "solo",
+                format: "points_based",
+                criteria: { type: 'highest_score', minScore: 40 },
+                rules: { maxParticipants: 100, minParticipants: 2, totalRounds: 3 },
+                prizes: {
+                    first: { xp: 800, coins: 200 },
+                    second: { xp: 400, coins: 100 },
+                    third: { xp: 200, coins: 50 }
+                },
+                registrationStart: new Date('2026-01-02T13:49:32.208Z'),
+                registrationEnd: new Date('2026-01-05T13:49:32.208Z'),
+                startDate: new Date('2026-01-06T13:49:32.208Z'),
+                endDate: new Date('2026-01-07T13:49:32.208Z'),
+                status: "completed",
+                featured: true,
+                image: "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?auto=format&fit=crop&q=80&w=1000",
+                participants: []
+            },
+            {
+                title: "Events",
+                description: "as per principle says that over college is one of the best college in the region.",
+                type: "league",
+                mode: "solo",
+                format: "points_based",
+                criteria: { type: 'most_xp', minScore: 10 },
+                rules: { maxParticipants: 200, minParticipants: 1, totalRounds: 1 },
+                prizes: {
+                    first: { xp: 500, coins: 100 },
+                    participation: { xp: 50, coins: 10 }
+                },
+                registrationStart: new Date('2026-01-08T00:00:00.000Z'),
+                registrationEnd: new Date('2026-01-15T00:00:00.000Z'),
+                startDate: new Date('2026-01-17T00:00:00.000Z'),
+                endDate: new Date('2026-01-20T00:00:00.000Z'),
+                status: "registration",
+                featured: false,
+                image: "https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&q=80&w=1000",
                 participants: []
             }
         ];
