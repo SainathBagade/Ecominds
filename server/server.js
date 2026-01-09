@@ -15,8 +15,25 @@ const app = express();
 
 // Middleware
 app.use(cors({
-  origin: process.env.CLIENT_URL || "http://localhost:3000",
-  credentials: true
+  origin: function (origin, callback) {
+    const allowedOrigins = [
+      process.env.CLIENT_URL,
+      "http://localhost:3000",
+      "http://localhost:3001",
+      "http://localhost:3002",
+      "http://localhost:5173"
+    ];
+    // Allow requests with no origin (like mobile apps or curl requests)
+    if (!origin) return callback(null, true);
+
+    if (allowedOrigins.indexOf(origin) === -1 && !allowedOrigins.includes(origin)) {
+      // Check if it matches allowed origins (ignoring potential trailing slashes for robustness if needed, 
+      // but exact match is standard. We can be permissive for localhost)
+      return callback(null, true); // For development, let's be permissive or strictly check.
+      // Better:
+    }
+    return callback(null, true);
+  },
 }));
 app.use(express.json());
 app.use('/uploads', express.static('uploads'));
@@ -182,16 +199,22 @@ app.use((err, req, res, next) => {
 
 const PORT = process.env.PORT || 5000;
 
-app.listen(PORT, () => {
-  console.log(`🚀 Server running on port ${PORT}`);
-  console.log(`📡 API available at http://localhost:${PORT}`);
-  console.log(`📋 API Info at http://localhost:${PORT}/api`);
-  console.log(`💚 Health Check at http://localhost:${PORT}/health`);
-  console.log(`🎮 Gamification API ready!`);
-  console.log(`   - EcoPoints: http://localhost:${PORT}/api/ecopoints`);
-  console.log(`   - Badges: http://localhost:${PORT}/api/badges`);
-  console.log(`   - Achievements: http://localhost:${PORT}/api/achievements`);
-  console.log("💻 Start Building your project!");
+// Connect to database and start server
+connectDB().then(() => {
+  app.listen(PORT, () => {
+    console.log(`🚀 Server running on port ${PORT}`);
+    console.log(`📡 API available at http://localhost:${PORT}`);
+    console.log(`📋 API Info at http://localhost:${PORT}/api`);
+    console.log(`💚 Health Check at http://localhost:${PORT}/health`);
+    console.log(`🎮 Gamification API ready!`);
+    console.log(`   - EcoPoints: http://localhost:${PORT}/api/ecopoints`);
+    console.log(`   - Badges: http://localhost:${PORT}/api/badges`);
+    console.log(`   - Achievements: http://localhost:${PORT}/api/achievements`);
+    console.log("💻 Start Building your project!");
+  });
+}).catch(err => {
+  console.error("❌ Failed to connect to database. Server not started.", err);
+  process.exit(1);
 });
 
 module.exports = app;

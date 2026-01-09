@@ -91,7 +91,11 @@ const registerUser = async (req, res) => {
       res.status(HTTP_STATUS.BAD_REQUEST).json({ message: 'Invalid user data' });
     }
   } catch (error) {
-    console.error('❌ Registration Error:', error);
+    console.error('❌ Registration Error DETAILS:', {
+      message: error.message,
+      stack: error.stack,
+      name: error.name
+    });
     res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({ message: error.message });
   }
 };
@@ -104,7 +108,7 @@ const loginUser = async (req, res) => {
     const { email, password } = req.body;
 
     // Check for user email
-    const user = await User.findOne({ email }).select('+password');;
+    const user = await User.findOne({ email }).select('+password');
 
     if (user && (await bcrypt.compare(password, user.password))) {
       // Check if user is approved
@@ -141,6 +145,11 @@ const loginUser = async (req, res) => {
       res.status(HTTP_STATUS.UNAUTHORIZED).json({ message: 'Invalid email or password' });
     }
   } catch (error) {
+    console.error('❌ Login Error DETAILS:', {
+      message: error.message,
+      stack: error.stack,
+      name: error.name
+    });
     res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({ message: error.message });
   }
 };
