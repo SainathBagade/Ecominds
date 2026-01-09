@@ -1,6 +1,6 @@
 // StreakHistory.jsx
 import React, { useState, useEffect } from 'react';
-import { Flame, Trophy, Calendar, Target, ShieldCheck } from 'lucide-react';
+import { Flame, Trophy, Target, ShieldCheck } from 'lucide-react';
 import api from '@services/api';
 
 const StreakHistory = ({ userId }) => {

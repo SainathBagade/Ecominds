@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate, Link } from 'react-router-dom';
-import { Trophy, Users, Clock, Award, Target, ArrowLeft, Shield, CheckCircle2, Brain } from 'lucide-react';
+import { useParams, useNavigate } from 'react-router-dom';
+import { Trophy, Users, Clock, Target, ArrowLeft, Shield, CheckCircle2, Brain } from 'lucide-react';
 import Loader from '@components/Common/Loader';
 import api from '@services/api';
 import toast from 'react-hot-toast';
@@ -16,11 +16,7 @@ const CompetitionDetail = () => {
     const [hasCompleted, setHasCompleted] = useState(false);
     const [userResult, setUserResult] = useState(null);
 
-    useEffect(() => {
-        fetchCompetition();
-    }, [id]);
-
-    const fetchCompetition = async () => {
+    const fetchCompetition = React.useCallback(async () => {
         setLoading(true);
         try {
             const response = await api.get(`/competitions/${id}`);
@@ -51,7 +47,11 @@ const CompetitionDetail = () => {
         } finally {
             setLoading(false);
         }
-    };
+    }, [id, user, navigate]);
+
+    useEffect(() => {
+        fetchCompetition();
+    }, [fetchCompetition]);
 
     const handleJoin = async () => {
         try {

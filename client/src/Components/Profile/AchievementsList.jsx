@@ -1,7 +1,7 @@
 
 // AchievementList.jsx
 import React, { useState, useEffect } from 'react';
-import { Trophy, Lock, Star } from 'lucide-react';
+import { Trophy, Star } from 'lucide-react';
 import api from '@services/api';
 import { useAuth } from '@hooks/useAuth';
 

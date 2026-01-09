@@ -1,4 +1,4 @@
-import { Trophy, Calendar, Users, Clock, Award, Target, ChevronRight, CheckCircle2 } from 'lucide-react';
+import { Trophy, Award, Target, ChevronRight, CheckCircle2 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { API_BASE_URL } from '@utils/constants';
 import { useAuth } from '@hooks/useAuth';

@@ -1,7 +1,6 @@
 import React from 'react';
 import { Navigate } from 'react-router-dom';
 import { useAuth } from '@hooks/useAuth';
-import { USER_ROLES } from '@utils/constants';
 import Loader from './Loader';
 
 /**

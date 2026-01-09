@@ -17,12 +17,7 @@ const Competitions = () => {
     totalPoints: 0
   });
 
-  useEffect(() => {
-    fetchCompetitions();
-    fetchUserStats();
-  }, [activeTab]);
-
-  const fetchCompetitions = async () => {
+  const fetchCompetitions = React.useCallback(async () => {
     setLoading(true);
     try {
       const params = { status: activeTab };
@@ -34,7 +29,12 @@ const Competitions = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [activeTab]);
+
+  useEffect(() => {
+    fetchCompetitions();
+    fetchUserStats();
+  }, [fetchCompetitions]);
 
   const fetchUserStats = async () => {
     try {

@@ -20,12 +20,7 @@ const Challenges = () => {
     pending: 0
   });
 
-  useEffect(() => {
-    fetchChallenges();
-    fetchUserStats();
-  }, [activeTab]);
-
-  const fetchChallenges = async () => {
+  const fetchChallenges = React.useCallback(async () => {
     setLoading(true);
     try {
       const params = {};
@@ -43,7 +38,12 @@ const Challenges = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [activeTab]);
+
+  useEffect(() => {
+    fetchChallenges();
+    fetchUserStats();
+  }, [fetchChallenges]);
 
   const fetchUserStats = async () => {
     try {

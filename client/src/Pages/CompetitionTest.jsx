@@ -14,7 +14,6 @@ const CompetitionTest = () => {
     const [currentStep, setCurrentStep] = useState(0); // 0: intro, 1: test, 2: results
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
     const [answers, setAnswers] = useState({});
-    const [testCompleted, setTestCompleted] = useState(false);
     const [results, setResults] = useState(null);
 
     // Sample 10 questions of different types
@@ -92,11 +91,7 @@ const CompetitionTest = () => {
         }
     ];
 
-    useEffect(() => {
-        fetchCompetition();
-    }, [id]);
-
-    const fetchCompetition = async () => {
+    const fetchCompetition = React.useCallback(async () => {
         try {
             const res = await api.get(`/competitions/${id}`);
             setCompetition(res.data.data);
@@ -106,7 +101,11 @@ const CompetitionTest = () => {
         } finally {
             setLoading(false);
         }
-    };
+    }, [id, navigate]);
+
+    useEffect(() => {
+        fetchCompetition();
+    }, [fetchCompetition]);
 
     const handleAnswerChange = (val) => {
         setAnswers({

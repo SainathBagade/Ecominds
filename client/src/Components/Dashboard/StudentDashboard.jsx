@@ -22,7 +22,7 @@ const StatCard = ({ icon: Icon, label, value, color }) => (
 
 const StudentDashboard = () => {
     const { user } = useAuth();
-    const { missions, loading: missionsLoading } = useContext(MissionContext);
+    const { missions } = useContext(MissionContext);
     const { progress } = useContext(ProgressContext);
     const [userStats, setUserStats] = React.useState(null);
     const [leaderboard, setLeaderboard] = React.useState([]);

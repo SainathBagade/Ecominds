@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Image, CheckCircle, XCircle, Clock, Eye } from 'lucide-react';
+import { Image, CheckCircle, XCircle, Clock } from 'lucide-react';
 import toast from 'react-hot-toast';
 import api from '@services/api';
 import { PROOF_STATUS, SITE_URL } from '@utils/constants';
@@ -9,13 +9,7 @@ const ProofSubmissions = ({ userId }) => {
   const [loading, setLoading] = useState(true);
   const [selectedImage, setSelectedImage] = useState(null);
 
-  useEffect(() => {
-    if (userId) {
-      fetchSubmissions();
-    }
-  }, [userId]);
-
-  const fetchSubmissions = async () => {
+  const fetchSubmissions = React.useCallback(async () => {
     setLoading(true);
     try {
       const response = await api.get(`/submissions/proofs/user/${userId}`);
@@ -26,7 +20,13 @@ const ProofSubmissions = ({ userId }) => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [userId]);
+
+  useEffect(() => {
+    if (userId) {
+      fetchSubmissions();
+    }
+  }, [userId, fetchSubmissions]);
 
   const getStatusBadge = (status) => {
     const badges = {

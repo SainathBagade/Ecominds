@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { Trophy, Clock, Users, Star, CheckCircle, Camera, Loader2, ArrowRight } from 'lucide-react';
+import { Trophy, Users, Star, CheckCircle, Camera, Loader2, ArrowRight } from 'lucide-react';
 import { AuthContext } from '../../Context/AuthContext';
 import toast from 'react-hot-toast';
 
@@ -29,8 +29,7 @@ const ChallengeCard = ({ challenge, onJoin, onSubmitProof }) => {
     difficulty = 'Medium',
     category,
     participants = [],
-    rewards = { xp: 0, coins: 0 },
-    status = 'active'
+    rewards = { xp: 0, coins: 0 }
   } = challenge || {};
 
   const participant = participants.find(p => p.user === user?._id || p.user?._id === user?._id);

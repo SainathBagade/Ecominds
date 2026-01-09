@@ -3,24 +3,21 @@ import { Play, Pause, Volume2, Maximize, PlayCircle, ShieldCheck } from 'lucide-
 
 const VideoPlayer = ({ url, title, thumbnail, onProgress }) => {
     const [isPlaying, setIsPlaying] = useState(false);
-    const [watchTime, setWatchTime] = useState(0);
     const [hasTriggered, setHasTriggered] = useState(false);
     const videoRef = useRef(null);
     const timerRef = useRef(null);
+    const watchTimeRef = useRef(0);
 
     // Track time for internal video element
     useEffect(() => {
         if (isPlaying && !hasTriggered) {
             timerRef.current = setInterval(() => {
-                setWatchTime(prev => {
-                    const next = prev + 1;
-                    if (next >= 10 && !hasTriggered) {
-                        setHasTriggered(true);
-                        if (onProgress) onProgress(10);
-                        clearInterval(timerRef.current);
-                    }
-                    return next;
-                });
+                watchTimeRef.current += 1;
+                if (watchTimeRef.current >= 10 && !hasTriggered) {
+                    setHasTriggered(true);
+                    if (onProgress) onProgress(10);
+                    clearInterval(timerRef.current);
+                }
             }, 1000);
         } else {
             if (timerRef.current) clearInterval(timerRef.current);
