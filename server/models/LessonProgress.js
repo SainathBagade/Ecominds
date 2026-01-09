@@ -61,43 +61,43 @@ lessonProgressSchema.index({ user: 1, module: 1 });
 lessonProgressSchema.index({ user: 1, status: 1 });
 
 // Method to update progress
-lessonProgressSchema.methods.updateProgress = async function(scoreData) {
+lessonProgressSchema.methods.updateProgress = async function (scoreData) {
   this.attempts += 1;
   this.lastAttemptDate = new Date();
-  
+
   if (scoreData.score > this.score) {
     this.score = scoreData.score;
   }
-  
+
   if (scoreData.timeSpent) {
     this.timeSpent += scoreData.timeSpent;
   }
-  
+
   if (scoreData.score >= 80) {
     this.status = 'completed';
     this.completedAt = new Date();
-    
+
     if (scoreData.score === 100) {
       this.isPerfect = true;
     }
   } else if (this.status === 'not_started') {
     this.status = 'in_progress';
   }
-  
+
   return await this.save();
 };
 
 // Static method to get user's lesson progress for a module
-lessonProgressSchema.statics.getModuleProgress = async function(userId, moduleId) {
+lessonProgressSchema.statics.getModuleProgress = async function (userId, moduleId) {
   return await this.find({ user: userId, module: moduleId })
     .populate('lesson', 'title order')
     .sort({ 'lesson.order': 1 });
 };
 
 // Static method to get completion statistics
-lessonProgressSchema.statics.getUserStats = async function(userId) {
+lessonProgressSchema.statics.getUserStats = async function (userId) {
   return await this.aggregate([
-    { $match: { user: mongoose.Types.ObjectId(userId) } },
+    { $match: { user: new mongoose.Types.ObjectId(userId) } },
     {
       $group: {
         _id: '$status',

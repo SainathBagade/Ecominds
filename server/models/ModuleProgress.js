@@ -119,7 +119,7 @@ moduleProgressSchema.methods.issueCertificate = async function (certificateUrl) 
 // Static method to get user's overall progress
 moduleProgressSchema.statics.getUserOverallProgress = async function (userId) {
   return await this.aggregate([
-    { $match: { user: mongoose.Types.ObjectId(userId) } },
+    { $match: { user: new mongoose.Types.ObjectId(userId) } },
     {
       $group: {
         _id: null,
