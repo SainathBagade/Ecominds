@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@hooks/useAuth';
 import UserProfile from '@components/Profile/UserProfile';
 import BadgeCollection from '@components/Profile/BadgeCollection';
-import EcoPointsHistory from '@components/Profile/EcoPointsHistory';
+
 import AchievementsList from '@components/Profile/AchievementsList';
 import StreakHistory from '@components/Profile/StreakHistory';
 import ProgressSummary from '@components/Profile/ProgressSummary';
@@ -25,13 +25,7 @@ const Profile = () => {
   const [stats, setStats] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    if (user?._id) {
-      fetchProfileData();
-    }
-  }, [user?._id]);
-
-  const fetchProfileData = async () => {
+  const fetchProfileData = React.useCallback(async () => {
     if (!user?._id) return;
     setLoading(true);
     try {
@@ -55,7 +49,13 @@ const Profile = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [user?._id]);
+
+  useEffect(() => {
+    if (user?._id) {
+      fetchProfileData();
+    }
+  }, [user?._id, fetchProfileData]);
 
   const handleUpdatePassword = async () => {
     if (!passwordData.password || !passwordData.confirmPassword) {

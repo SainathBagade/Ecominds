@@ -3,7 +3,7 @@ import { useAuth } from '@hooks/useAuth';
 import { useSearchParams } from 'react-router-dom';
 import {
     UserCheck, Shield, Award, Check, X,
-    Plus, UserPlus, Trophy, Calendar,
+    UserPlus, Trophy, Calendar,
     Mail, Loader2, Users
 } from 'lucide-react';
 import api from '@services/api';

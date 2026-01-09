@@ -25,14 +25,9 @@ const Learn = () => {
     if (user?.grade && !filters.grade) {
       setFilters(prev => ({ ...prev, grade: user.grade }));
     }
-  }, [user]);
+  }, [user, filters.grade]);
 
-  useEffect(() => {
-    fetchSubjects();
-    fetchLessons();
-  }, [filters.grade, filters.subject]);
-
-  const fetchSubjects = async () => {
+  const fetchSubjects = React.useCallback(async () => {
     try {
       const params = {};
       if (filters.grade) params.gradeLevel = filters.grade;
@@ -41,9 +36,9 @@ const Learn = () => {
     } catch (error) {
       console.error('Error fetching subjects:', error);
     }
-  };
+  }, [filters.grade]);
 
-  const fetchLessons = async () => {
+  const fetchLessons = React.useCallback(async () => {
     setLoading(true);
     try {
       const params = {};
@@ -58,7 +53,12 @@ const Learn = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [filters.grade, filters.subject]);
+
+  useEffect(() => {
+    fetchSubjects();
+    fetchLessons();
+  }, [fetchSubjects, fetchLessons]);
 
   const handleFilterChange = (key, value) => {
     const newFilters = { ...filters, [key]: value };

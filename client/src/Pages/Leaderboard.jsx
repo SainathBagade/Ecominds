@@ -6,7 +6,7 @@ import Loader from '@components/Common/Loader';
 import { Trophy, Users, Medal, TrendingUp } from 'lucide-react';
 import toast from 'react-hot-toast';
 import api from '@services/api';
-import { LEADERBOARD_TYPES, LEADERBOARD_TIMEFRAMES } from '@utils/constants';
+import { LEADERBOARD_TIMEFRAMES } from '@utils/constants';
 
 const Leaderboard = () => {
   const { user } = useAuth();
@@ -14,7 +14,6 @@ const Leaderboard = () => {
   const [timeFilter, setTimeFilter] = useState(LEADERBOARD_TIMEFRAMES.WEEKLY); // weekly, monthly, alltime
   const [selectedGrade, setSelectedGrade] = useState(user?.grade || '10');
   const [leaderboardData, setLeaderboardData] = useState([]);
-  const [userRank, setUserRank] = useState(null);
   const [loading, setLoading] = useState(true);
   const [stats, setStats] = useState({
     totalUsers: 0,
@@ -23,45 +22,35 @@ const Leaderboard = () => {
   });
 
   useEffect(() => {
+    const fetchLeaderboard = async () => {
+      setLoading(true);
+      try {
+        const endpoint = activeTab === 'class' ? '/leaderboard' : '/leaderboard/competition';
+        const response = await api.get(endpoint, {
+          params: {
+            type: timeFilter,
+            grade: activeTab === 'class' ? selectedGrade : undefined,
+            limit: 50 // Show all students (usually 40, but handle more just in case)
+          }
+        });
+        // Backend returns { success, data: { rankings, userRank, ... } }
+        setLeaderboardData(response.data.data?.rankings || []);
+        const uRank = response.data.data?.userRank;
+        setStats({
+          totalUsers: response.data.data?.rankings?.length || 0,
+          userPoints: uRank?.score || 0,
+          userRank: uRank?.rank || 0
+        });
+      } catch (error) {
+        toast.error('Failed to load leaderboard');
+        console.error('Error fetching leaderboard:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
     fetchLeaderboard();
   }, [activeTab, timeFilter, selectedGrade]);
-
-  const fetchLeaderboard = async () => {
-    setLoading(true);
-    try {
-      const endpoint = activeTab === 'class' ? '/leaderboard' : '/leaderboard/competition';
-      const response = await api.get(endpoint, {
-        params: {
-          type: timeFilter,
-          grade: activeTab === 'class' ? selectedGrade : undefined,
-          limit: 50 // Show all students (usually 40, but handle more just in case)
-        }
-      });
-      // Backend returns { success, data: { rankings, userRank, ... } }
-      setLeaderboardData(response.data.data?.rankings || []);
-      const uRank = response.data.data?.userRank;
-      setStats({
-        totalUsers: response.data.data?.rankings?.length || 0,
-        userPoints: uRank?.score || 0,
-        userRank: uRank?.rank || 0
-      });
-      // Also update the detailed userRank state for the big card
-      if (uRank) {
-        setUserRank({
-          rank: uRank.rank,
-          points: uRank.score,
-          pointsToNextRank: uRank.pointsToNextRank || 0
-        });
-      } else {
-        setUserRank(null);
-      }
-    } catch (error) {
-      toast.error('Failed to load leaderboard');
-      console.error('Error fetching leaderboard:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
 
 
 

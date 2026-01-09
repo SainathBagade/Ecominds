@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Leaf, Trophy, Users, Zap, ArrowRight, CheckCircle } from 'lucide-react';
+import { Leaf, Trophy, Users, Zap, ArrowRight } from 'lucide-react';
 
 const Home = () => {
   const features = [
@@ -45,19 +45,19 @@ const Home = () => {
                 <span className="text-primary-600"> Save the Planet!</span>
               </h1>
               <p className="text-xl text-gray-600">
-                Join thousands of students learning about environmental science through 
+                Join thousands of students learning about environmental science through
                 interactive lessons, quizzes, and real-world challenges.
               </p>
               <div className="flex flex-wrap gap-4">
-                <Link 
-                  to="/register" 
+                <Link
+                  to="/register"
                   className="btn btn-primary text-lg px-8 py-3 flex items-center gap-2 shadow-lg hover:shadow-xl"
                 >
                   Get Started Free
                   <ArrowRight className="w-5 h-5" />
                 </Link>
-                <Link 
-                  to="/about" 
+                <Link
+                  to="/about"
                   className="btn btn-secondary text-lg px-8 py-3"
                 >
                   Learn More
@@ -66,8 +66,8 @@ const Home = () => {
               <div className="flex items-center gap-4 pt-4">
                 <div className="flex -space-x-3">
                   {[1, 2, 3, 4].map((i) => (
-                    <div 
-                      key={i} 
+                    <div
+                      key={i}
                       className="w-10 h-10 rounded-full bg-gradient-to-br from-primary-400 to-primary-600 border-2 border-white"
                     />
                   ))}
@@ -79,8 +79,8 @@ const Home = () => {
             </div>
             <div className="relative animate-fade-in">
               <div className="relative z-10 bg-white rounded-2xl shadow-2xl p-8">
-                <img 
-                  src="/assets/images/hero-illustration.svg" 
+                <img
+                  src="/assets/images/hero-illustration.svg"
                   alt="EcoMinds Learning"
                   className="w-full h-auto"
                   onError={(e) => {
@@ -124,8 +124,8 @@ const Home = () => {
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
             {features.map((feature, index) => (
-              <div 
-                key={index} 
+              <div
+                key={index}
                 className="card text-center hover:scale-105 transition-transform"
               >
                 <div className="flex justify-center mb-4">
@@ -184,8 +184,8 @@ const Home = () => {
           <p className="text-xl mb-8 opacity-90">
             Join thousands of students making a difference while learning
           </p>
-          <Link 
-            to="/register" 
+          <Link
+            to="/register"
             className="inline-flex items-center gap-2 bg-white text-primary-600 px-8 py-4 rounded-lg text-lg font-semibold hover:bg-gray-100 transition-all shadow-lg hover:shadow-xl"
           >
             Get Started Now

@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Target, Trophy, Clock, Zap, Plus, ArrowLeft, Send, Sparkles, AlertCircle } from 'lucide-react';
+import { Target, Trophy, Clock, ArrowLeft, Send, Sparkles, AlertCircle } from 'lucide-react';
 import api from '@services/api';
 import toast from 'react-hot-toast';
-import { DIFFICULTY_LEVELS } from '@utils/constants';
 
 const CreateChallenge = () => {
     const navigate = useNavigate();

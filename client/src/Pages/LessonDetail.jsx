@@ -19,11 +19,7 @@ const LessonDetail = () => {
     const [completed, setCompleted] = useState(false);
     const [quizId, setQuizId] = useState(null);
 
-    useEffect(() => {
-        fetchLesson();
-    }, [id]);
-
-    const fetchLesson = async () => {
+    const fetchLesson = React.useCallback(async () => {
         setLoading(true);
         try {
             const response = await api.get(`/lessons/${id}`);
@@ -50,7 +46,11 @@ const LessonDetail = () => {
         } finally {
             setLoading(false);
         }
-    };
+    }, [id, navigate]);
+
+    useEffect(() => {
+        fetchLesson();
+    }, [fetchLesson]);
 
     const handleComplete = async () => {
         if (completed) return;

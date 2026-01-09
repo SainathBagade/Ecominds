@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useMission } from '@hooks/useDailyMissions';
 import MissionCard from '@components/Dashboard/MissionCard';
 import ProofUploadModal from '@components/Dashboard/ProofUploadModal';
