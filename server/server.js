@@ -132,12 +132,15 @@ const routeFiles = [
   { path: '/api/superadmin', file: './routes/superadmin.routes' }
 ];
 
-routeFiles.forEach(({ path, file }) => {
+routeFiles.forEach(({ path: routePath, file }) => {
   try {
     const route = require(file);
     console.log(`✅ Loading route: ${file}`, typeof route);
     if (typeof route === 'function' || (route && typeof route === 'object')) {
-      app.use(path, route);
+      app.use(routePath, route);
+      // For Netlify compatibility: also register without the /api prefix if needed, 
+      // or handle the potential function name prefix
+      app.use(`/.netlify/functions/api${routePath}`, route);
     } else {
       console.error(`❌ Invalid route export in ${file}:`, route);
     }
@@ -145,6 +148,15 @@ routeFiles.forEach(({ path, file }) => {
     console.error(`❌ Error loading ${file}:`, error.message);
   }
 });
+
+// Root API compatibility
+app.use('/.netlify/functions/api', (req, res, next) => {
+  if (req.url === '/') {
+    return res.json({ message: "EcoMinds API (Netlify Entry Point)" });
+  }
+  next();
+});
+
 console.log("✅ Routes registered");
 
 // Serve static files in production (Catch-all MUST be last)
