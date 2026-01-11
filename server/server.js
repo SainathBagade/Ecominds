@@ -150,37 +150,30 @@ const routeFiles = [
   { path: '/api/superadmin', file: './routes/superadmin.routes' }
 ];
 
-// --- 🛠️ UNIVERSAL API ROUTING ---
-const mainRouter = express.Router();
-
-// Register all modules into the mainRouter
+// --- 🛠️ DIRECT ROUTE REGISTRATION MATRIX ---
+// Multi-level registration to guarantee matches regardless of serverless pathing
 routeFiles.forEach(({ path: routePath, file }) => {
   try {
     const route = require(file);
-    // Strip the '/api' prefix for the internal router match
-    const internalPath = routePath.replace('/api', '');
-    if (internalPath === '' || internalPath === '/') {
-      mainRouter.use('/', route);
-    } else {
-      mainRouter.use(internalPath, route);
+    const nonApiPath = routePath.replace('/api', '');
+    const netlifyPath = `/.netlify/functions/api${nonApiPath}`;
+
+    // 1. Standard /api mount
+    app.use(routePath, route);
+
+    // 2. Stripped / mount
+    if (nonApiPath && nonApiPath !== '/') {
+      app.use(nonApiPath, route);
     }
+
+    // 3. Internal Function mount
+    app.use(netlifyPath, route);
   } catch (error) {
     console.error(`❌ Error loading ${file}:`, error.message);
   }
 });
 
-// Mount the Main Router to handle all possible entry points
-app.use('/api', mainRouter); // Matches /api/users/register
-app.use('/.netlify/functions/api', mainRouter); // Matches internal Netlify path
-app.use('/', (req, res, next) => {
-  // If request doesn't match a static file, try the mainRouter
-  if (req.url !== '/' && !req.url.includes('.')) {
-    return mainRouter(req, res, next);
-  }
-  next();
-});
-
-console.log("✅ Universal API Router successfully mounted");
+console.log("✅ Route Registration Matrix applied");
 
 // Serve static files in production (Catch-all MUST be last)
 if (process.env.NODE_ENV === 'production') {
