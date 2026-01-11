@@ -200,21 +200,23 @@ app.use((err, req, res, next) => {
 const PORT = process.env.PORT || 5000;
 
 // Connect to database and start server
-connectDB().then(() => {
-  app.listen(PORT, () => {
-    console.log(`🚀 Server running on port ${PORT}`);
-    console.log(`📡 API available at http://localhost:${PORT}`);
-    console.log(`📋 API Info at http://localhost:${PORT}/api`);
-    console.log(`💚 Health Check at http://localhost:${PORT}/health`);
-    console.log(`🎮 Gamification API ready!`);
-    console.log(`   - EcoPoints: http://localhost:${PORT}/api/ecopoints`);
-    console.log(`   - Badges: http://localhost:${PORT}/api/badges`);
-    console.log(`   - Achievements: http://localhost:${PORT}/api/achievements`);
-    console.log("💻 Start Building your project!");
+if (require.main === module) {
+  connectDB().then(() => {
+    app.listen(PORT, () => {
+      console.log(`🚀 Server running on port ${PORT}`);
+      console.log(`📡 API available at http://localhost:${PORT}`);
+      console.log(`📋 API Info at http://localhost:${PORT}/api`);
+      console.log(`💚 Health Check at http://localhost:${PORT}/health`);
+      console.log(`🎮 Gamification API ready!`);
+      console.log(`   - EcoPoints: http://localhost:${PORT}/api/ecopoints`);
+      console.log(`   - Badges: http://localhost:${PORT}/api/badges`);
+      console.log(`   - Achievements: http://localhost:${PORT}/api/achievements`);
+      console.log("💻 Start Building your project!");
+    });
+  }).catch(err => {
+    console.error("❌ Failed to connect to database. Server not started.", err);
+    process.exit(1);
   });
-}).catch(err => {
-  console.error("❌ Failed to connect to database. Server not started.", err);
-  process.exit(1);
-});
+}
 
 module.exports = app;
