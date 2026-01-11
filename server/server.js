@@ -138,9 +138,11 @@ routeFiles.forEach(({ path: routePath, file }) => {
     console.log(`✅ Loading route: ${file}`, typeof route);
     if (typeof route === 'function' || (route && typeof route === 'object')) {
       app.use(routePath, route);
-      // For Netlify compatibility: also register without the /api prefix if needed, 
-      // or handle the potential function name prefix
-      app.use(`/.netlify/functions/api${routePath}`, route);
+
+      // Netlify compatibility: strip /api from the beginning of the routePath 
+      // to match the Netlify redirect splat.
+      const netlifyPath = `/.netlify/functions/api${routePath.replace(/^\/api/, '')}`;
+      app.use(netlifyPath, route);
     } else {
       console.error(`❌ Invalid route export in ${file}:`, route);
     }
