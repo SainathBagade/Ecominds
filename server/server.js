@@ -25,41 +25,24 @@ const app = express();
 
 // Middleware
 app.use(cors({
-  origin: true, // Allow all origins during initial deployment to resolve CORS issues quickly
+  origin: true,
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
 app.use(express.json());
 app.use('/uploads', express.static('uploads'));
-console.log("✅ Middleware configured");
+app.use(ensureDbConnected);
+console.log("✅ Middleware and DB connection configured");
 
 
-// Serve static files in production
-if (process.env.NODE_ENV === 'production') {
-  // Serve static files from the React app
-  app.use(express.static(path.join(__dirname, '../client/build')));
-
-  // The "catchall" handler: for any request that doesn't
-  // match one above, send back React's index.html file.
-  app.get('*', (req, res) => {
-    // Check if request is for API
-    if (req.path.startsWith('/api')) {
-      return res.status(404).json({
-        error: 'Not Found',
-        message: `API route not found: ${req.method} ${req.url}`
-      });
-    }
-    res.sendFile(path.resolve(__dirname, '../client/build', 'index.html'));
-  });
-  console.log("✅ Serving React App in Production");
-} else {
-  // Development Welcome Route
+// Development Welcome Route
+if (process.env.NODE_ENV !== 'production') {
   app.get('/', (req, res) => {
     res.json({
       message: '🎉 Welcome to EcoMinds API!',
       status: 'Server is running in Development mode',
-      instructions: 'Frontend is running separately on port 3000'
+      instructions: 'Frontend is running separately'
     });
   });
 }
@@ -162,8 +145,24 @@ routeFiles.forEach(({ path, file }) => {
     console.error(`❌ Error loading ${file}:`, error.message);
   }
 });
-app.use(ensureDbConnected);
 console.log("✅ Routes registered");
+
+// Serve static files in production (Catch-all MUST be last)
+if (process.env.NODE_ENV === 'production') {
+  console.log("✅ Production mode: Configuring static assets and catch-all");
+  app.use(express.static(path.join(__dirname, '../client/build')));
+
+  app.get('*', (req, res) => {
+    // If we're here, it means no API route matched
+    if (req.path.startsWith('/api')) {
+      return res.status(404).json({
+        error: 'Not Found',
+        message: `API route not found: ${req.method} ${req.url}`
+      });
+    }
+    res.sendFile(path.resolve(__dirname, '../client/build', 'index.html'));
+  });
+}
 
 // 404 Handler - For undefined routes
 app.use((req, res) => {
