@@ -1,4 +1,5 @@
 const express = require('express');
+const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const cors = require('cors');
 const path = require('path');
@@ -8,8 +9,17 @@ const connectDB = require('./config/database');
 dotenv.config();
 console.log("✅ Environment variables loaded");
 
-// Connect to database
-connectDB();
+// Database middleware (lazy connection)
+const ensureDbConnected = async (req, res, next) => {
+  try {
+    if (mongoose.connection.readyState === 0) {
+      await connectDB();
+    }
+    next();
+  } catch (error) {
+    next(error);
+  }
+};
 
 const app = express();
 
@@ -152,6 +162,7 @@ routeFiles.forEach(({ path, file }) => {
     console.error(`❌ Error loading ${file}:`, error.message);
   }
 });
+app.use(ensureDbConnected);
 console.log("✅ Routes registered");
 
 // 404 Handler - For undefined routes

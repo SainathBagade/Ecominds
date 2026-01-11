@@ -5,8 +5,7 @@ const connectDB = async () => {
     let uri = process.env.MONGO_URI || process.env.MONGO_URL;
 
     if (!uri) {
-      console.error('❌ MONGO_URI or MONGO_URL is missing in environment variables');
-      process.exit(1);
+      throw new Error('MONGO_URI or MONGO_URL is missing in environment variables');
     }
 
     // Fix: Ensure database name is in the URI if missing
@@ -39,12 +38,8 @@ const connectDB = async () => {
     });
 
   } catch (error) {
-    console.error(`❌ Error: ${error.message}`);
-    // Check for common errors
-    if (error.name === 'MongooseServerSelectionError') {
-      console.error('❓ Hint: Check your IP Whitelist in MongoDB Atlas or your internet connection.');
-    }
-    process.exit(1);
+    console.error(`❌ MongoDB Connection Error: ${error.message}`);
+    throw error;
   }
 };
 
