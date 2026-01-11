@@ -15,25 +15,10 @@ const app = express();
 
 // Middleware
 app.use(cors({
-  origin: function (origin, callback) {
-    const allowedOrigins = [
-      process.env.CLIENT_URL,
-      "http://localhost:3000",
-      "http://localhost:3001",
-      "http://localhost:3002",
-      "http://localhost:5173"
-    ];
-    // Allow requests with no origin (like mobile apps or curl requests)
-    if (!origin) return callback(null, true);
-
-    if (allowedOrigins.indexOf(origin) === -1 && !allowedOrigins.includes(origin)) {
-      // Check if it matches allowed origins (ignoring potential trailing slashes for robustness if needed, 
-      // but exact match is standard. We can be permissive for localhost)
-      return callback(null, true); // For development, let's be permissive or strictly check.
-      // Better:
-    }
-    return callback(null, true);
-  },
+  origin: true, // Allow all origins during initial deployment to resolve CORS issues quickly
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
 }));
 app.use(express.json());
 app.use('/uploads', express.static('uploads'));
