@@ -26,30 +26,11 @@ const app = express();
 // Middleware
 app.use(cors({
   origin: true,
-  credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization']
+  credentials: true
 }));
 app.use(express.json());
 app.use('/uploads', express.static('uploads'));
 app.use(ensureDbConnected);
-
-// URL Normalization Middleware (Crucial for Netlify)
-app.use((req, res, next) => {
-  const originalUrl = req.url;
-  // If request comes through Netlify function, it might have a long prefix
-  if (req.url.startsWith('/.netlify/functions/api')) {
-    req.url = req.url.replace('/.netlify/functions/api', '');
-    if (!req.url.startsWith('/')) req.url = '/' + req.url;
-  }
-
-  // Ensure we consistently handle the /api prefix
-  // If the request doesn't start with /api (local dev or direct function hit), we don't change it.
-  // But if it was redirected by netlify.toml, it will match our routes below.
-
-  console.log(`🛣️ Route Match: ${req.method} ${originalUrl} -> ${req.url}`);
-  next();
-});
 
 console.log("✅ Middleware and DB connection configured");
 
@@ -150,30 +131,16 @@ const routeFiles = [
   { path: '/api/superadmin', file: './routes/superadmin.routes' }
 ];
 
-// --- 🛠️ DIRECT ROUTE REGISTRATION MATRIX ---
-// Multi-level registration to guarantee matches regardless of serverless pathing
+// --- 🛠️ ROUTES ---
 routeFiles.forEach(({ path: routePath, file }) => {
   try {
     const route = require(file);
-    const nonApiPath = routePath.replace('/api', '');
-    const netlifyPath = `/.netlify/functions/api${nonApiPath}`;
-
-    // 1. Standard /api mount
     app.use(routePath, route);
-
-    // 2. Stripped / mount
-    if (nonApiPath && nonApiPath !== '/') {
-      app.use(nonApiPath, route);
-    }
-
-    // 3. Internal Function mount
-    app.use(netlifyPath, route);
+    console.log(`📡 Registered: ${routePath}`);
   } catch (error) {
     console.error(`❌ Error loading ${file}:`, error.message);
   }
 });
-
-console.log("✅ Route Registration Matrix applied");
 
 // Serve static files in production (Catch-all MUST be last)
 if (process.env.NODE_ENV === 'production') {
@@ -194,20 +161,9 @@ if (process.env.NODE_ENV === 'production') {
 
 // 404 Handler - For undefined routes
 app.use((req, res) => {
-  console.log(`❌ 404 at: ${req.method} ${req.url}`);
   res.status(404).json({
-    error: 'Route not found',
-    message: `Cannot ${req.method} ${req.url}`,
-    debug: {
-      url: req.url,
-      baseUrl: req.baseUrl,
-      originalUrl: req.originalUrl,
-      method: req.method
-    },
-    availableRoutes: [
-      'POST /api/users/register',
-      'POST /api/users/login'
-    ]
+    error: 'Not Found',
+    message: `Cannot ${req.method} ${req.url}`
   });
 });
 
