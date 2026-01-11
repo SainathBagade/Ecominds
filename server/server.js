@@ -194,19 +194,19 @@ if (process.env.NODE_ENV === 'production') {
 
 // 404 Handler - For undefined routes
 app.use((req, res) => {
+  console.log(`❌ 404 at: ${req.method} ${req.url}`);
   res.status(404).json({
     error: 'Route not found',
     message: `Cannot ${req.method} ${req.url}`,
+    debug: {
+      url: req.url,
+      baseUrl: req.baseUrl,
+      originalUrl: req.originalUrl,
+      method: req.method
+    },
     availableRoutes: [
-      'GET /',
-      'GET /api',
-      'GET /health',
       'POST /api/users/register',
-      'POST /api/users/login',
-      'GET /api/users',
-      'GET /api/ecopoints/leaderboard',
-      'GET /api/badges',
-      'GET /api/achievements'
+      'POST /api/users/login'
     ]
   });
 });
