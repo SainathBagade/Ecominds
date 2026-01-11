@@ -33,6 +33,24 @@ app.use(cors({
 app.use(express.json());
 app.use('/uploads', express.static('uploads'));
 app.use(ensureDbConnected);
+
+// URL Normalization Middleware (Crucial for Netlify)
+app.use((req, res, next) => {
+  const originalUrl = req.url;
+  // If request comes through Netlify function, it might have a long prefix
+  if (req.url.startsWith('/.netlify/functions/api')) {
+    req.url = req.url.replace('/.netlify/functions/api', '');
+    if (!req.url.startsWith('/')) req.url = '/' + req.url;
+  }
+
+  // Ensure we consistently handle the /api prefix
+  // If the request doesn't start with /api (local dev or direct function hit), we don't change it.
+  // But if it was redirected by netlify.toml, it will match our routes below.
+
+  console.log(`🛣️ Route Match: ${req.method} ${originalUrl} -> ${req.url}`);
+  next();
+});
+
 console.log("✅ Middleware and DB connection configured");
 
 
@@ -135,28 +153,19 @@ const routeFiles = [
 routeFiles.forEach(({ path: routePath, file }) => {
   try {
     const route = require(file);
-    console.log(`✅ Loading route: ${file}`, typeof route);
     if (typeof route === 'function' || (route && typeof route === 'object')) {
+      // Register standard /api/... routes
       app.use(routePath, route);
 
-      // Netlify compatibility: strip /api from the beginning of the routePath 
-      // to match the Netlify redirect splat.
-      const netlifyPath = `/.netlify/functions/api${routePath.replace(/^\/api/, '')}`;
-      app.use(netlifyPath, route);
-    } else {
-      console.error(`❌ Invalid route export in ${file}:`, route);
+      // Register normalized /... routes (for when /api is stripped)
+      const nonApiPath = routePath.replace('/api', '');
+      if (nonApiPath) {
+        app.use(nonApiPath, route);
+      }
     }
   } catch (error) {
     console.error(`❌ Error loading ${file}:`, error.message);
   }
-});
-
-// Root API compatibility
-app.use('/.netlify/functions/api', (req, res, next) => {
-  if (req.url === '/') {
-    return res.json({ message: "EcoMinds API (Netlify Entry Point)" });
-  }
-  next();
 });
 
 console.log("✅ Routes registered");
